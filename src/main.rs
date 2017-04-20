@@ -29,13 +29,18 @@ fn main() {
 			power_usage_watt
 		);
 
-		Command::new("xsetroot")
+		run_set_root(status_text);
+
+		sleep(Duration::from_millis(500));
+	}
+}
+
+fn run_set_root(status_text: String) {
+	Command::new("xsetroot")
 			.arg("-name")
 			.arg(status_text)
-			.output();
-
-		sleep(Duration::from_millis(1000));
-	}
+			.output()
+			.expect("Failed to xsetroot");
 }
 
 fn get_power_usage_watt(power_usage_microwatt: i32) -> f32 {
@@ -45,7 +50,7 @@ fn get_power_usage_watt(power_usage_microwatt: i32) -> f32 {
 }
 
 fn get_battery_power_usage() -> i32 {
-	let power_usage_path = "/sys/class/power_supply/BAT1/power_now";
+	let power_usage_path = "/sys/class/power_supply/BAT1/power_now".to_string();
 	let power_usage_str = read_file_to_str(power_usage_path);
 	let power_usage_trimmed = power_usage_str.trim();
 
@@ -53,7 +58,7 @@ fn get_battery_power_usage() -> i32 {
 }
 
 fn get_battery_charge_pct() -> i8 {
-	let charge_pct_path = "/sys/class/power_supply/BAT1/capacity";
+	let charge_pct_path = "/sys/class/power_supply/BAT1/capacity".to_string();
 	let charge_pct_str = read_file_to_str(charge_pct_path);
 	let charge_pct_trimmed = charge_pct_str.trim();
 
@@ -61,13 +66,13 @@ fn get_battery_charge_pct() -> i8 {
 }
 
 fn is_battery_charging() -> bool {
-	let charging_path = "/sys/class/power_supply/BAT1/status";
+	let charging_path = "/sys/class/power_supply/BAT1/status".to_string();
 	let charging_file_content = read_file_to_str(charging_path);
 
 	!charging_file_content.contains("Discharging")
 }
 
-fn read_file_to_str(path: &str) -> String {
+fn read_file_to_str(path: String) -> String {
 	let mut file = match File::open(path) {
 		Err(why) => panic!("couldn't open file: {}", why),
 		Ok(file) => file
