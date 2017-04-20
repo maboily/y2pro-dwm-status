@@ -22,7 +22,7 @@ fn main() {
 		let power_usage_watt = get_power_usage_watt(power_usage);
 
 		let status_text = format!(
-			"{} [{}{}%, Load: {:04.1}W]",
+			"{} [{}{}% / {:04.1}W]",
 			time_str,
 			charge_txt,
 			charge_pct,
