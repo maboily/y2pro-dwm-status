@@ -1,7 +1,7 @@
 [package]
 name = "y2pro-dwm-status"
 version = "0.1.0"
-authors = ["anon"]
+authors = ["maboily"]
 
 [dependencies]
 time="0.1"
